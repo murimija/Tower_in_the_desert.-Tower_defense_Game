@@ -2,14 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+ using UnityEngine.UI;
 
-public class EnemyController : MonoBehaviour
+ public class EnemyController : MonoBehaviour
 {
-    public float speed;
+    [SerializeField] private float speed;
+    [SerializeField] private int deathReward;
+    [SerializeField] private GameObject partToOrient;
     private Vector3 directionOfMotion;
     [NonSerialized] public Vector3 spawnPosition;
     private HPController HPOfAtackedTarget;
-    private bool isAttack;
+    private bool isAttack;    
+    private GameController gameController;
+    private PlayerController playerController;
+    
 
     private enum State
     {
@@ -17,16 +23,16 @@ public class EnemyController : MonoBehaviour
         Attack,
         Die
     }
-
-    private State currentState;
-
+    
     void Start()
     {
         directionOfMotion = -spawnPosition;
-        transform.GetChild(0).transform.rotation = Quaternion.LookRotation(directionOfMotion);
+        partToOrient.transform.rotation = Quaternion.LookRotation(directionOfMotion);
         currentState = State.Walk;
     }
 
+    private State currentState;
+    
     private void FixedUpdate()
     {
         UpdateState();
@@ -74,7 +80,10 @@ public class EnemyController : MonoBehaviour
     
     void Die()
     {
-        Debug.Log("Die");
+        Destroy(gameObject);
+        playerController.increaseMoney(deathReward);
+        gameController.UpdateNumOfEnemy();
+        
     }
 
     private void OnTriggerEnter(Collider other)

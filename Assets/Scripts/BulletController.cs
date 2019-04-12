@@ -8,7 +8,7 @@ public class BulletController : MonoBehaviour
 
     public float speed = 70f;
 
-    public int damage = 50;
+    public int damage = 10;
 
     public float explosionRadius = 0f;
     public GameObject impactEffect;
@@ -27,6 +27,7 @@ public class BulletController : MonoBehaviour
         if (dir.magnitude <= distanceThisFrame)
         {
             HitTarget();
+            target.GetComponent<HPController>().takeDamage(damage);
             return;
         }
 
@@ -37,7 +38,6 @@ public class BulletController : MonoBehaviour
     
     void HitTarget ()
     {
-        Debug.Log("Hit");
         Destroy(gameObject);
     }
     

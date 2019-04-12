@@ -1,9 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController instance;
+
+    void Awake()
+    {
+        if (instance != null)
+            return;
+
+        instance = this;
+    }
+    
     [SerializeField] private float diamOfHex;
     [SerializeField] private int numOfRings;
     public GameObject hexPref;
@@ -15,6 +26,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private GameObject enemyPref;
     [SerializeField] private float enemySpavnWait;
     private Vector3 enemySpawnPosition;
+    [SerializeField] private int numOfEnemyOnLevel = 20;
+    [SerializeField] private Text numOfEnemyText;
 
     void CreateGrid()
     {
@@ -72,5 +85,16 @@ public class GameController : MonoBehaviour
             newEnemy.GetComponent<EnemyController>().spawnPosition = enemySpawnPosition;
             yield return new WaitForSeconds(enemySpavnWait);
         }
+    }
+
+    public void UpdateNumOfEnemy()
+    {
+        numOfEnemyOnLevel--;
+        numOfEnemyText.text = numOfEnemyOnLevel.ToString();
+    }
+
+    void GameOver()
+    {
+        Time.timeScale = 0;
     }
 }

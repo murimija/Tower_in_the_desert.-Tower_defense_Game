@@ -1,24 +1,34 @@
-﻿using System.Collections;
+﻿﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HPController : MonoBehaviour
 {
-    [SerializeField] private int healthPoints;
+    [SerializeField] private int maxHealthPoints;
+    public int currentHealthPoints;
+    [SerializeField] private Image healthBar;
+
+    private void Start()
+    {
+        currentHealthPoints = maxHealthPoints;
+    }
 
     public void takeDamage(int damage)
     {
-        healthPoints -= damage;
+        currentHealthPoints -= damage;
 
-        if (healthPoints <= 0)
+        healthBar.fillAmount = (float) currentHealthPoints / maxHealthPoints;
+
+        if (currentHealthPoints <= 0)
         {
-            deathOfObject();
+            death();
         }
     }
 
-    void deathOfObject()
+    void death()
     {
-        Debug.Log("Im die!");
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
 }

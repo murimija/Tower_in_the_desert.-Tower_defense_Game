@@ -3,7 +3,6 @@
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
-    private GameObject turretToBuild;
 
     void Awake()
     {
@@ -16,59 +15,26 @@ public class BuildManager : MonoBehaviour
         instance = this;
     }
 
-    public GameObject standartTurret;
+    public GameObject buildEffect;
+
+    private GameObject turretToBuild;
+    private PlayerController playerController;
 
     private void Start()
     {
-        turretToBuild = standartTurret;
+        playerController = PlayerController.instance;
     }
-
-    public GameObject GetTurrretToBuilt()
-    {
-        return turretToBuild;
-    }
-
-/*
-    public GameObject buildEffect;
-    public GameObject sellEffect;
-
-    private TurretBlueprint turretToBuild;
-    private Node selectedNode;
-
-    public NodeUI nodeUI;
 
     public bool CanBuild { get { return turretToBuild != null; } }
-    public bool HasMoney { get { return PlayerStats.Money >= turretToBuild.cost; } }
+    public bool HasMoney { get { return playerController.money >= turretToBuild.GetComponent<TurretControll>().cost; } }
 
-    public void SelectNode (Node node)
-    {
-        if (selectedNode == node)
-        {
-            DeselectNode();
-            return;
-        }
-
-        selectedNode = node;
-        turretToBuild = null;
-
-        nodeUI.SetTarget(node);
-    }
-
-    public void DeselectNode()
-    {
-        selectedNode = null;
-        nodeUI.Hide();
-    }
-
-    public void SelectTurretToBuild (TurretBlueprint turret)
-    {
-        turretToBuild = turret;
-        DeselectNode();
-    }
-
-    public TurretBlueprint GetTurretToBuild ()
+    public GameObject GetTurretToBuild()
     {
         return turretToBuild;
     }
-*/
+
+    public void SelectTurretToBuild(GameObject turret)
+    {
+        turretToBuild = turret;
+    }
 }

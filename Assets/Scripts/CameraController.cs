@@ -16,7 +16,12 @@ public class CameraController : MonoBehaviour
 
     private Vector3 forvardHexVec = new Vector3(Mathf.Sin(Mathf.PI / 6), 0, Mathf.Cos(Mathf.PI / 6));
     private Vector3 rightHexVec = new Vector3(Mathf.Cos(Mathf.PI / 6), 0, -Mathf.Sin(Mathf.PI / 6));
-    private Vector3 cameraForvardVec = new Vector3(0, -Mathf.Cos(Mathf.PI / 4), Mathf.Cos(Mathf.PI / 4));
+    private Vector3 cameraForvardVec;
+
+    private void Start()
+    {
+        cameraForvardVec = (transform.position).normalized;
+    }
 
     // Update is called once per frame
     void Update()

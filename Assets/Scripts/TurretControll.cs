@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TurrenControll : MonoBehaviour
+public class TurretControll : MonoBehaviour
 {
     public float range = 15f;
+    public int cost;
 
     private GameObject[] enemies;
     private float shortestDistance;
@@ -84,7 +86,6 @@ public class TurrenControll : MonoBehaviour
 
     void Shoot()
     {
-        Debug.Log("ss");
         GameObject bulletGO = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bulletGO.GetComponent<BulletController>().Seek(target);
     }
@@ -93,5 +94,10 @@ public class TurrenControll : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
