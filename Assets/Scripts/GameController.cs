@@ -91,10 +91,15 @@ public class GameController : MonoBehaviour
     {
         numOfEnemyOnLevel--;
         numOfEnemyText.text = numOfEnemyOnLevel.ToString();
+        if (numOfEnemyOnLevel <= 0)
+        {
+            gameObject.GetComponent<SceneChanger>().GoToScene("Win_screen");
+        }
     }
 
-    void GameOver()
+    public void GameOver()
     {
-        Time.timeScale = 0;
+        Debug.Log("Game Over!");
+        gameObject.GetComponent<SceneChanger>().GoToScene("GameOver_screen");
     }
 }

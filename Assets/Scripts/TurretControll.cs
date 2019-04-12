@@ -96,7 +96,7 @@ public class TurretControll : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    private void Destroy()
+    public void Destroy()
     {
         Destroy(gameObject);
     }

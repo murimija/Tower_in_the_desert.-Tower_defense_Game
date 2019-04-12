@@ -15,6 +15,7 @@ using UnityEngine;
     private bool isAttack;    
     private GameController gameController;
     private PlayerController playerController;
+    [SerializeField] private Animator animator;
     
 
     private enum State
@@ -26,8 +27,11 @@ using UnityEngine;
     
     void Start()
     {
+        gameController = GameController.instance;
+        playerController = PlayerController.instance;
+        animator = gameObject.GetComponent<Animator>();
         directionOfMotion = -spawnPosition;
-        partToOrient.transform.rotation = Quaternion.LookRotation(directionOfMotion);
+        partToOrient.transform.rotation = Quaternion.LookRotation(-directionOfMotion);
         currentState = State.Walk;
     }
 
@@ -60,11 +64,13 @@ using UnityEngine;
 
     void Walk()
     {
+        animator.SetBool("attack", false);
         transform.Translate(directionOfMotion * speed * Time.deltaTime);
     }
 
     void Attack()
     {
+        animator.SetBool("attack", true);
         Debug.Log("ATTACK");
         HPOfAtackedTarget.takeDamage(10);
     }
@@ -78,10 +84,11 @@ using UnityEngine;
         }
     }
     
-    void Die()
+    public void Die()
     {
-        Destroy(gameObject);
-        playerController.increaseMoney(deathReward);
+        animator.SetTrigger("die");
+        Destroy(gameObject, 1f);
+        playerController.increaseMoney(100);
         gameController.UpdateNumOfEnemy();
         
     }
@@ -89,7 +96,7 @@ using UnityEngine;
     private void OnTriggerEnter(Collider other)
 
     {
-        if (other.CompareTag("Tower"))
+        if (other.CompareTag("Tower") || other.CompareTag("Turret"))
         {
             HPOfAtackedTarget = other.GetComponent<HPController>();
             currentState = State.Attack;

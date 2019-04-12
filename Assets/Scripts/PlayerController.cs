@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,17 +16,19 @@ public class PlayerController : MonoBehaviour
     }
     
     public int money;
-    public int startMoney = 400;
+    [SerializeField] private int startMoney = 400;
+    [SerializeField] private Text amountOfMoney;
 
     public void ReduceMoney(int valueToTakeAway)
     {
-        money = money - valueToTakeAway;
-        Debug.Log(valueToTakeAway);
+        money -= valueToTakeAway;
+        amountOfMoney.text = money.ToString();
     }
     
     public void increaseMoney(int valueToAdd)
     {
         money += valueToAdd;
+        amountOfMoney.text = money.ToString();
     }
 
     void Start ()

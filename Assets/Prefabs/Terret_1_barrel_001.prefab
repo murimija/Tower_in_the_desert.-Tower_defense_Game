@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 877503469267677257}
   m_Layer: 0
   m_Name: Terret_1_barrel_001
-  m_TagString: Tower
+  m_TagString: Turret
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
