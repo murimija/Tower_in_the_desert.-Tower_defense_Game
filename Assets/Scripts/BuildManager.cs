@@ -4,7 +4,7 @@ public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
         {
@@ -15,8 +15,6 @@ public class BuildManager : MonoBehaviour
         instance = this;
     }
 
-    public GameObject buildEffect;
-
     private GameObject turretToBuild;
     private PlayerController playerController;
 
@@ -25,8 +23,8 @@ public class BuildManager : MonoBehaviour
         playerController = PlayerController.instance;
     }
 
-    public bool CanBuild { get { return turretToBuild != null; } }
-    public bool HasMoney { get { return playerController.money >= turretToBuild.GetComponent<TurretControll>().cost; } }
+    public bool CanBuild => turretToBuild != null;
+    public bool HasMoney => playerController != null && playerController.money >= turretToBuild.GetComponent<TurretController>().cost;
 
     public GameObject GetTurretToBuild()
     {

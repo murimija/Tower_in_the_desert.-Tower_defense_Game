@@ -3,7 +3,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneChanger : MonoBehaviour
 {
-    [SerializeField] private Animator curtainForScenesTransition;
     private string nextScene;
 
     public void GoToScene(string nameOfScene)
@@ -11,8 +10,8 @@ public class SceneChanger : MonoBehaviour
         nextScene = nameOfScene;
         onTransitionComplete();
     }
-    // ReSharper disable once UnusedMember.Global
-    public void onTransitionComplete()
+
+    private void onTransitionComplete()
     {
         SceneManager.LoadScene(nextScene);
     }

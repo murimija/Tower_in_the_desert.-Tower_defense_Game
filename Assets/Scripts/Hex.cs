@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Hex : MonoBehaviour
@@ -8,9 +6,7 @@ public class Hex : MonoBehaviour
     public Color hoverColor;
     public Color notEnoughMoneyColor;
     public Vector3 positionOffset = new Vector3(0, 1, 0);
-
-    [HideInInspector] public GameObject turret;
-    [HideInInspector] public bool isUpgraded = false;
+    [SerializeField] private GameObject buildingTurretEffect;
 
     private Renderer rend;
     private Color startColor;
@@ -18,7 +14,7 @@ public class Hex : MonoBehaviour
     private BuildManager buildManager;
     private PlayerController playerController;
 
-    void Start()
+    private void Start()
     {
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
@@ -27,16 +23,10 @@ public class Hex : MonoBehaviour
         playerController = PlayerController.instance;
     }
 
-    void OnMouseDown()
+    private void OnMouseDown()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
-
-/*        if (turret != null)
-        {
-            buildManager.SelectNode(this);
-            return;
-        }*/
 
         if (!buildManager.CanBuild)
             return;
@@ -44,24 +34,24 @@ public class Hex : MonoBehaviour
         BuildTurret(buildManager.GetTurretToBuild());
     }
 
-    void BuildTurret(GameObject tuttet)
+    private void BuildTurret(GameObject turret)
     {
-        if (playerController.money < tuttet.GetComponent<TurretControll>().cost)
+        if (playerController.money < turret.GetComponent<TurretController>().cost)
         {
             Debug.Log("Not enough money to build that!");
             return;
         }
-        GameObject _turret =
-            (GameObject) Instantiate(tuttet, transform.position + positionOffset, transform.rotation);
-        turret = _turret;
-        
-        playerController.ReduceMoney(tuttet.GetComponent<TurretControll>().cost);
-        
-/*        GameObject effect = (GameObject) Instantiate(buildManager.buildEffect, GetBuildPosition(), Quaternion.identity);
-        Destroy(effect, 5f);*/
+
+        var position = transform.position;
+        Instantiate(turret, position + positionOffset, Quaternion.identity);
+
+        playerController.ReduceMoney(turret.GetComponent<TurretController>().cost);
+
+        var spawnedEffect = Instantiate(buildingTurretEffect, position + positionOffset, Quaternion.identity);
+        Destroy(spawnedEffect, 2f);
     }
 
-    void OnMouseEnter()
+    private void OnMouseEnter()
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
@@ -70,17 +60,10 @@ public class Hex : MonoBehaviour
             return;
 
 
-        if (buildManager.HasMoney)
-        {
-            rend.material.color = hoverColor;
-        }
-        else
-        {
-            rend.material.color = notEnoughMoneyColor;
-        }
+        rend.material.color = buildManager.HasMoney ? hoverColor : notEnoughMoneyColor;
     }
 
-    void OnMouseExit()
+    private void OnMouseExit()
     {
         rend.material.color = startColor;
     }

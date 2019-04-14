@@ -105,8 +105,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa866ebba1a2f4442b0471e8f9604aa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverColor: {r: 0.8479341, g: 1, b: 0.75, a: 1}
-  notEnoughMoneyColor: {r: 0, g: 0, b: 0, a: 0}
+  hoverColor: {r: 0.3388655, g: 0.9622642, b: 0.28595585, a: 1}
+  notEnoughMoneyColor: {r: 1, g: 0.4669811, b: 0.4669811, a: 1}
   positionOffset: {x: 0, y: 1, z: 0}
+  buildingTurretEffect: {fileID: 2982282071796461570, guid: f8d97f3defd3c3e4290288350e40ac54,
+    type: 3}
   turret: {fileID: 0}
   isUpgraded: 0

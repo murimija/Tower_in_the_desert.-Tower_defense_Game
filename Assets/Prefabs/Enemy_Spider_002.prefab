@@ -1145,10 +1145,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9603e1af03e5eaf4d86831e459cf4ea3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.3
-  deathReward: 100
+  speed: 0.1
+  speedOfAttack: 0.5
+  damage: 25
+  deathReward: 50
+  probabilityOfOccurrence: 25
   partToOrient: {fileID: 6054164286332582878}
-  animator: {fileID: 0}
+  enemyDieEffect: {fileID: 957448686251811450, guid: d4288373656ab994ca9f41549246e5f9,
+    type: 3}
 --- !u!114 &7992200067133056064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1161,7 +1165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e672b6381205c409282a5ec84f1e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 40
+  maxHealthPoints: 70
   currentHealthPoints: 0
   healthBar: {fileID: 6124398165708437746}
 --- !u!65 &8984383872914435871

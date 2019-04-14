@@ -2,17 +2,25 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    public GameObject standardTurret;
+    [SerializeField] private GameObject oneBarrelTurret;
+    [SerializeField] private GameObject twoBarrelTurret;
 
-    BuildManager buildManager;
+    private BuildManager buildManager;
 
-    void Start()
+    private void Start()
     {
         buildManager = BuildManager.instance;
     }
 
-    public void SelectStandardTurret()
+    // ReSharper disable once UnusedMember.Global
+    public void SelectOneBarrelTurret()
     {
-        buildManager.SelectTurretToBuild(standardTurret);
+        buildManager.SelectTurretToBuild(oneBarrelTurret);
+    }
+
+    // ReSharper disable once UnusedMember.Global
+    public void SelectTwoBarrelTurret()
+    {
+        buildManager.SelectTurretToBuild(twoBarrelTurret);
     }
 }

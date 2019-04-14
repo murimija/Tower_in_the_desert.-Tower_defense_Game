@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 419004967}
   - component: {fileID: 419004968}
   - component: {fileID: 4503372141994976965}
-  - component: {fileID: 877503469267677257}
+  - component: {fileID: 2897768227728085624}
   m_Layer: 0
   m_Name: Terret_1_barrel_001
   m_TagString: Turret
@@ -92,7 +92,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419004966}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.83, y: 0, z: 0}
+  m_LocalPosition: {x: -8.83, y: -0.16, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
   - {fileID: 4946212154777327723}
@@ -124,6 +124,8 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6695296056501329228, guid: 356d418e2e56f29448e98dc296dcc112,
     type: 3}
   fireRate: 1
+  destroyEffect: {fileID: 2982282071796461570, guid: 454d72af76a01174aac2b619901748e9,
+    type: 3}
 --- !u!114 &4503372141994976965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,23 +138,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7e672b6381205c409282a5ec84f1e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealthPoints: 100
+  maxHealthPoints: 150
   currentHealthPoints: 0
   healthBar: {fileID: 2447059398363928831}
---- !u!136 &877503469267677257
-CapsuleCollider:
+--- !u!65 &2897768227728085624
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419004966}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.03
-  m_Height: 0.16
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.05, y: 0.05, z: 0.05}
+  m_Center: {x: 0, y: 0.02, z: 0}
 --- !u!1 &510170068
 GameObject:
   m_ObjectHideFlags: 0

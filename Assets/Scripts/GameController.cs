@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,31 +6,48 @@ public class GameController : MonoBehaviour
 {
     public static GameController instance;
 
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
             return;
 
         instance = this;
     }
-    
-    [SerializeField] private float diamOfHex;
-    [SerializeField] private int numOfRings;
-    public GameObject hexPref;
-    private Vector3 north = new Vector3(0, 0, 1);
-    private Vector3 northEast = new Vector3(Mathf.Cos(Mathf.PI / 6) * 1, 0, Mathf.Sin(Mathf.PI / 6) * 1);
-    private Vector3 southEast = new Vector3(Mathf.Cos(Mathf.PI / 6) * 1, 0, -Mathf.Sin(Mathf.PI / 6) * 1);
-    private int counterOfSpawnPosition = 0;
-    private Vector3[] spawnPositionArray;
-    [SerializeField] private GameObject enemyPref;
-    [SerializeField] private float enemySpavnWait;
-    private Vector3 enemySpawnPosition;
-    [SerializeField] private int numOfEnemyOnLevel = 20;
+
+    private const float diamOfHex = 6.4f;
+
+    [Header("Parameters of hexagonal grid")] [SerializeField]
+    private int numOfRings;
+
+    [SerializeField] private GameObject hexPref;
+    [SerializeField] private GameObject hexNoEffectPref;
+
+    [Header("Enemy settings")] [SerializeField]
+    private GameObject enemyPrefYellow;
+
+    [SerializeField] private GameObject enemyPrefRed;
+    [SerializeField] private GameObject enemyPrefBlue;
+    [SerializeField] private GameObject enemySpawnEffect;
+    [SerializeField] private float enemySpawnWait;
+    [SerializeField] private float accelerationOfEnemySpawnWait;
+
+    [Header("Level Settings")] [SerializeField]
+    private int numOfEnemyOnLevel = 20;
+
     [SerializeField] private Text numOfEnemyText;
 
-    void CreateGrid()
+    private readonly Vector3 north = new Vector3(0, 0, 1);
+    private readonly Vector3 northEast = new Vector3(Mathf.Cos(Mathf.PI / 6) * 1, 0, Mathf.Sin(Mathf.PI / 6) * 1);
+    private readonly Vector3 southEast = new Vector3(Mathf.Cos(Mathf.PI / 6) * 1, 0, -Mathf.Sin(Mathf.PI / 6) * 1);
+
+    private int counterOfSpawnPosition;
+    private Vector3[] spawnPositionArray;
+
+    private Vector3 enemySpawnPosition;
+
+    private void CreateGrid()
     {
-        for (int i = 1; i <= numOfRings; i++)
+        for (var i = 1; i <= numOfRings; i++)
         {
             buildRayOfHex(north, southEast, i);
             buildRayOfHex(northEast, -north, i);
@@ -42,25 +58,32 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void buildRayOfHex(Vector3 startDirection, Vector3 direction, int numOfCurrentRing)
+    private GameObject choseHex()
+    {
+        return Random.value < 0.7 ? hexPref : hexNoEffectPref;
+    }
+
+    private void buildRayOfHex(Vector3 startDirection, Vector3 direction, int numOfCurrentRing)
     {
         if (numOfCurrentRing != numOfRings)
         {
-            Vector3 spawnPosition = startDirection * diamOfHex * numOfCurrentRing;
+            var spawnPosition = startDirection * diamOfHex * numOfCurrentRing;
+            // ReSharper disable once SuggestVarOrType_BuiltInTypes
             for (int i = 1; i <= numOfCurrentRing; i++)
             {
-                Instantiate(hexPref, spawnPosition, Quaternion.identity);
+                Instantiate(choseHex(), spawnPosition, Quaternion.identity);
                 spawnPosition += direction * diamOfHex;
             }
         }
         else
         {
-            Vector3 spawnPosition = startDirection * diamOfHex * numOfCurrentRing;
+            var spawnPosition = startDirection * diamOfHex * numOfCurrentRing;
             spawnPositionArray[counterOfSpawnPosition] = spawnPosition;
 
+            // ReSharper disable once SuggestVarOrType_BuiltInTypes
             for (int i = 1; i <= numOfCurrentRing; i++)
             {
-                Instantiate(hexPref, spawnPosition, Quaternion.identity);
+                Instantiate(hexNoEffectPref, spawnPosition, Quaternion.identity);
                 spawnPosition += direction * diamOfHex;
                 spawnPositionArray[counterOfSpawnPosition] = spawnPosition;
                 counterOfSpawnPosition++;
@@ -72,28 +95,57 @@ public class GameController : MonoBehaviour
     {
         spawnPositionArray = new Vector3[numOfRings * 6];
         CreateGrid();
-        StartCoroutine(SpawnOfEnimies());
+        StartCoroutine(SpawnOfEnemies());
     }
 
-    IEnumerator SpawnOfEnimies()
+    private GameObject choiceOfEnemyType()
     {
+        var sumOfProbably = enemyPrefYellow.GetComponent<EnemyController>().probabilityOfOccurrence +
+                             enemyPrefRed.GetComponent<EnemyController>().probabilityOfOccurrence +
+                             enemyPrefBlue.GetComponent<EnemyController>().probabilityOfOccurrence;
+        var chose = Random.Range(0, sumOfProbably);
+        if (chose < enemyPrefYellow.GetComponent<EnemyController>().probabilityOfOccurrence)
+        {
+            return enemyPrefYellow;
+        }
+
+        return chose > enemyPrefYellow.GetComponent<EnemyController>().probabilityOfOccurrence +
+               enemyPrefRed.GetComponent<EnemyController>().probabilityOfOccurrence ? enemyPrefBlue : enemyPrefRed;
+    }
+
+    private IEnumerator SpawnOfEnemies()
+    {
+        yield return new WaitForSeconds(2f);
         while (true)
         {
             enemySpawnPosition = spawnPositionArray[Random.Range(0, spawnPositionArray.Length)];
             enemySpawnPosition.y = 2;
-            var newEnemy = Instantiate(enemyPref, enemySpawnPosition, Quaternion.identity);
+            var newEnemy = Instantiate(choiceOfEnemyType(), enemySpawnPosition, Quaternion.identity);
             newEnemy.GetComponent<EnemyController>().spawnPosition = enemySpawnPosition;
-            yield return new WaitForSeconds(enemySpavnWait);
+            var spawnedEffect = Instantiate(enemySpawnEffect, enemySpawnPosition + new Vector3(0, 1, 1),
+                Quaternion.identity);
+            Destroy(spawnedEffect, 2f);
+            yield return new WaitForSeconds(enemySpawnWait);
         }
+        // ReSharper disable once IteratorNeverReturns
     }
 
     public void UpdateNumOfEnemy()
     {
         numOfEnemyOnLevel--;
         numOfEnemyText.text = numOfEnemyOnLevel.ToString();
+        UpdateEnemySpawnWait();
         if (numOfEnemyOnLevel <= 0)
         {
             gameObject.GetComponent<SceneChanger>().GoToScene("Win_screen");
+        }
+    }
+
+    private void UpdateEnemySpawnWait()
+    {
+        if (enemySpawnWait >= 0.5)
+        {
+            enemySpawnWait -= accelerationOfEnemySpawnWait;
         }
     }
 

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BulletController : MonoBehaviour
 {
@@ -9,20 +7,16 @@ public class BulletController : MonoBehaviour
     public float speed = 70f;
 
     public int damage = 10;
-
-    public float explosionRadius = 0f;
-    public GameObject impactEffect;
-
-    void Update () {
-
+    private void Update()
+    {
         if (target == null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Vector3 dir = target.position - transform.position;
-        float distanceThisFrame = speed * Time.deltaTime;
+        var dir = target.position - transform.position;
+        var distanceThisFrame = speed * Time.deltaTime;
 
         if (dir.magnitude <= distanceThisFrame)
         {
@@ -30,17 +24,15 @@ public class BulletController : MonoBehaviour
             target.GetComponent<HPController>().takeDamage(damage);
             return;
         }
-
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
         transform.LookAt(target);
-
     }
-    
-    void HitTarget ()
+
+    private void HitTarget()
     {
         Destroy(gameObject);
     }
-    
+
     public void Seek(Transform _target)
     {
         target = _target;

@@ -1,11 +1,5 @@
-﻿﻿using System;
-using System.Collections;
-using System.Collections.Generic;
- using System.Diagnostics;
- using TMPro;
- using UnityEngine;
-using UnityEngine.UI;
- using Debug = UnityEngine.Debug;
+﻿﻿using UnityEngine;
+ using UnityEngine.UI;
 
  public class HPController : MonoBehaviour
 {
@@ -32,21 +26,12 @@ using UnityEngine.UI;
         }
     }
 
-    void death()
+    private void death()
     {
-        switch (gameObject.tag)
-        {
-            case "Enemy":
-                gameObject.GetComponent<EnemyController>().Die();
-                break;
-            case "Tower":
-                gameController.GameOver();
-                break;
-            case "Turret":
-                gameObject.GetComponent<TurretControll>().Destroy();
-                break;
-            
-        }
-       
+        if (gameObject.CompareTag("Enemy"))
+            gameObject.GetComponent<EnemyController>().Die();
+        else if (gameObject.CompareTag("Tower"))
+            gameController.GameOver();
+        else if (gameObject.CompareTag("Turret")) gameObject.GetComponent<TurretController>().Destroy();
     }
 }

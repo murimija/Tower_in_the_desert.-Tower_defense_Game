@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Tower
   - Turret
+  - Hex
   layers:
   - Default
   - TransparentFX
@@ -18,8 +19,8 @@ TagManager:
   - 
   - PostProcessing
   - Enemy
-  - 
-  - 
+  - TransparentFloor
+  - Effects
   - 
   - 
   - 

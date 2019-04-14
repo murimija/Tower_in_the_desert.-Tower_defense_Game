@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3546254655399277732}
   - component: {fileID: 5768225212341437021}
   - component: {fileID: 7583969506435217026}
-  - component: {fileID: 7399667456834936259}
   m_Layer: 0
   m_Name: Hex_no_effect
   m_TagString: Untagged
@@ -93,20 +92,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 81c284a74171b8d49b799e742810b45c, type: 3}
---- !u!114 &7399667456834936259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1033380794540257897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa866ebba1a2f4442b0471e8f9604aa4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverColor: {r: 0.5660378, g: 0.34433612, b: 0.050729785, a: 1}
-  notEnoughMoneyColor: {r: 0, g: 0, b: 0, a: 0}
-  positionOffset: {x: 0, y: 1, z: 0}
-  turret: {fileID: 0}
-  isUpgraded: 0

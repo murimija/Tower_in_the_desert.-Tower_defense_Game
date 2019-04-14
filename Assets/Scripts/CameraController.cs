@@ -2,31 +2,27 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    public float panSpeed = 30f;
-    public float panBorderThickness = 10f;
+    [SerializeField] private float panSpeed = 30f;
+    [SerializeField] private float panBorderThickness = 10f;
 
-    public float scrollSpeed = 5f;
-    public float minY = 10f;
+    [SerializeField] private float scrollSpeed = 5f;
+    [SerializeField] private float minY = 10f;
+    [SerializeField] private float maxY = 80f;
+    [SerializeField] private float minZ = 10f;
+    [SerializeField] private float maxZ = 80f;
+    [SerializeField] private float minX = 10f;
+    [SerializeField] private float maxX = 80f;
 
-    public float maxY = 80f;
-	public float minZ = 10f;
-	public float maxZ = 80f;
-	public float minX = 10f;
-	public float maxX = 80f;
-
-    private Vector3 forvardHexVec = new Vector3(Mathf.Sin(Mathf.PI / 6), 0, Mathf.Cos(Mathf.PI / 6));
-    private Vector3 rightHexVec = new Vector3(Mathf.Cos(Mathf.PI / 6), 0, -Mathf.Sin(Mathf.PI / 6));
-    private Vector3 cameraForvardVec;
+    private Vector3 cameraForwardVec;
 
     private void Start()
     {
-        cameraForvardVec = (transform.position).normalized;
+        cameraForwardVec = transform.position.normalized;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        /*if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness)
+        if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness)
         {
             transform.Translate(Vector3.forward * panSpeed * Time.deltaTime, Space.World);
         }
@@ -44,13 +40,13 @@ public class CameraController : MonoBehaviour
         if (Input.GetKey("a") || Input.mousePosition.x <= panBorderThickness)
         {
             transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
-        }*/
+        }
 
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        var scroll = Input.GetAxis("Mouse ScrollWheel");
 
-        Vector3 pos = transform.position;
+        var pos = transform.position;
 
-        pos -= cameraForvardVec * scroll * 1000 * scrollSpeed * Time.deltaTime;
+        pos -= cameraForwardVec * scroll * 1000 * scrollSpeed * Time.deltaTime;
         pos.y = Mathf.Clamp(pos.y, minY, maxY);
         pos.z = Mathf.Clamp(pos.z, minZ, maxZ);
         pos.x = Mathf.Clamp(pos.x, minX, maxX);

@@ -1,22 +1,27 @@
-﻿﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
- using UnityEngine.UI;
 
- public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private float speed;
+    [Header("Gaming attributes")] [SerializeField]
+    private float speed;
+
+    [SerializeField] private float speedOfAttack;
+    [SerializeField] private int damage;
     [SerializeField] private int deathReward;
-    [SerializeField] private GameObject partToOrient;
+    public int probabilityOfOccurrence = 50;
+
+    [Header("Prefab settings")] [SerializeField]
+    private GameObject partToOrient;
+
     private Vector3 directionOfMotion;
     [NonSerialized] public Vector3 spawnPosition;
-    private HPController HPOfAtackedTarget;
-    private bool isAttack;    
+    private HPController HPOfAttackedTarget;
+    private bool isAttack;
     private GameController gameController;
     private PlayerController playerController;
-    [SerializeField] private Animator animator;
-    
+    private Animator animator;
+    [SerializeField] private GameObject enemyDieEffect;
 
     private enum State
     {
@@ -24,8 +29,8 @@ using UnityEngine;
         Attack,
         Die
     }
-    
-    void Start()
+
+    private void Start()
     {
         gameController = GameController.instance;
         playerController = PlayerController.instance;
@@ -36,20 +41,22 @@ using UnityEngine;
     }
 
     private State currentState;
-    
+    private static readonly int Die1 = Animator.StringToHash("die");
+    private static readonly int Attack1 = Animator.StringToHash("attack");
+
     private void FixedUpdate()
     {
         UpdateState();
-        if (HPOfAtackedTarget == null)
+        if (HPOfAttackedTarget == null)
         {
             currentState = State.Walk;
         }
     }
 
-    void UpdateState()
+    private void UpdateState()
     {
-        
-        switch (currentState) {
+        switch (currentState)
+        {
             case State.Walk:
                 Walk();
                 break;
@@ -59,47 +66,45 @@ using UnityEngine;
             case State.Die:
                 Die();
                 break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 
-    void Walk()
+    private void Walk()
     {
-        animator.SetBool("attack", false);
-        transform.Translate(directionOfMotion * speed * Time.deltaTime);
+        animator.SetBool(Attack1, false);
+        if (transform != null) transform.Translate(directionOfMotion * speed * Time.deltaTime);
     }
 
-    void Attack()
+    private void Attack()
     {
-        animator.SetBool("attack", true);
-        Debug.Log("ATTACK");
-        HPOfAtackedTarget.takeDamage(10);
+        if (animator != null) animator.SetBool(Attack1, true);
+        HPOfAttackedTarget.takeDamage(damage);
     }
 
-    void StartAttack()
+    private void StartAttack()
     {
-        if (!isAttack)
-        {
-            InvokeRepeating("Attack", 0f, 1f);
-            isAttack = true;
-        }
+        if (isAttack) return;
+        InvokeRepeating(nameof(Attack), 0f, speedOfAttack);
+        isAttack = true;
     }
-    
+
     public void Die()
     {
-        animator.SetTrigger("die");
-        Destroy(gameObject, 1f);
-        playerController.increaseMoney(100);
+        if (animator != null) animator.SetTrigger(Die1);
+        Destroy(gameObject);
+        playerController.increaseMoney(deathReward);
         gameController.UpdateNumOfEnemy();
-        
+        var spawnedEffect = Instantiate(enemyDieEffect, transform.position, Quaternion.identity);
+        Destroy(spawnedEffect, 2f);
     }
 
     private void OnTriggerEnter(Collider other)
 
     {
-        if (other.CompareTag("Tower") || other.CompareTag("Turret"))
-        {
-            HPOfAtackedTarget = other.GetComponent<HPController>();
-            currentState = State.Attack;
-        }
+        if (!other.CompareTag("Tower") && !other.CompareTag("Turret")) return;
+        HPOfAttackedTarget = other.GetComponent<HPController>();
+        currentState = State.Attack;
     }
 }
