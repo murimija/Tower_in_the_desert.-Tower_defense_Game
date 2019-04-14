@@ -31,9 +31,8 @@ public class GameController : MonoBehaviour
     [SerializeField] private float enemySpawnWait;
     [SerializeField] private float accelerationOfEnemySpawnWait;
 
-    [Header("Level Settings")] [SerializeField]
-    private int numOfEnemyOnLevel = 20;
-
+    [Header("Level Settings")] 
+    [SerializeField] private int numOfEnemyOnLevel = 20;
     [SerializeField] private Text numOfEnemyText;
 
     private readonly Vector3 north = new Vector3(0, 0, 1);
@@ -94,6 +93,7 @@ public class GameController : MonoBehaviour
     private void Start()
     {
         spawnPositionArray = new Vector3[numOfRings * 6];
+        numOfEnemyText.text = numOfEnemyOnLevel.ToString();
         CreateGrid();
         StartCoroutine(SpawnOfEnemies());
     }
@@ -143,7 +143,7 @@ public class GameController : MonoBehaviour
 
     private void UpdateEnemySpawnWait()
     {
-        if (enemySpawnWait >= 0.5)
+        if (enemySpawnWait >= 1.5)
         {
             enemySpawnWait -= accelerationOfEnemySpawnWait;
         }

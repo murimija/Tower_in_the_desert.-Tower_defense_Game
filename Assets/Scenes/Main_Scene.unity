@@ -822,9 +822,9 @@ MonoBehaviour:
     type: 3}
   enemySpawnEffect: {fileID: 2982282071796461570, guid: 593601cafd25a404192fb7b02e96cd5b,
     type: 3}
-  enemySpavnWait: 4
-  accelerationOfEnemySpavnWait: 0.2
-  numOfEnemyOnLevel: 20
+  enemySpawnWait: 4
+  accelerationOfEnemySpawnWait: 0.2
+  numOfEnemyOnLevel: 30
   numOfEnemyText: {fileID: 1649866020}
 --- !u!114 &1078761526
 MonoBehaviour:
@@ -838,7 +838,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c69bfae37c81a5479ae4cd66978eecf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildEffect: {fileID: 0}
 --- !u!114 &1078761527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,7 +865,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7320341d1ca28ba4cad91a330f26b8ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curtainForScenesTransition: {fileID: 0}
 --- !u!1001 &1118627142
 PrefabInstance:
   m_ObjectHideFlags: 0

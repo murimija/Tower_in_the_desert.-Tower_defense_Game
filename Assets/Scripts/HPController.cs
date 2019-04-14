@@ -33,5 +33,7 @@
         else if (gameObject.CompareTag("Tower"))
             gameController.GameOver();
         else if (gameObject.CompareTag("Turret")) gameObject.GetComponent<TurretController>().Destroy();
+        
+        Destroy(gameObject);
     }
 }

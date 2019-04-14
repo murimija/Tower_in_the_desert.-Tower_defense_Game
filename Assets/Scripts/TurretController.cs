@@ -96,8 +96,8 @@ public class TurretController : MonoBehaviour
 
     public void Destroy()
     {
-        Destroy(gameObject);
         var effect = Instantiate(destroyEffect, transform.position, Quaternion.identity);
+        Destroy(gameObject);
         Destroy(effect, 2f);
     }
 }

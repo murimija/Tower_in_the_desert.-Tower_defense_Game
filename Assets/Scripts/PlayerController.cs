@@ -32,5 +32,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         money = startMoney;
+        amountOfMoney.text = startMoney.ToString();
     }
 }

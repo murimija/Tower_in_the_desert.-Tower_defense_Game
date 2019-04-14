@@ -74,6 +74,7 @@ public class EnemyController : MonoBehaviour
     private void Walk()
     {
         animator.SetBool(Attack1, false);
+        CancelInvoke(nameof(Attack));
         if (transform != null) transform.Translate(directionOfMotion * speed * Time.deltaTime);
     }
 
